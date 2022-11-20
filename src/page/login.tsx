@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/component/header';
 import Loading from '@/common/icons/loading';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ResultModal from '@/component/resultModal';
 import API from '@/common/api';
 import { AdminSessionKey, AdminUsernameKey } from '@/common/settings';
@@ -14,6 +14,8 @@ const Login = () => {
 
   const [isShowingResult, setShowingResult] = useState(false);
   const [result, setResult] = useState('');
+
+  const nonRequested = useRef(true);
 
   useEffect(() => {
     // Do login
@@ -33,7 +35,10 @@ const Login = () => {
       }
     };
 
-    doLogin();
+    if (token && nonRequested.current) {
+      nonRequested.current = false;
+      doLogin();
+    }
   }, [nav, token]);
 
   const closeModal = () => {
