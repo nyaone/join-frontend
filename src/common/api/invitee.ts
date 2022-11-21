@@ -1,6 +1,11 @@
 import { BackendUri } from '@/common/settings';
 
-const CodeCheck = async (code: string): Promise<boolean> => {
+export interface CodeCheckResult {
+  valid: boolean;
+  reason: string;
+}
+
+const CodeCheck = async (code: string): Promise<CodeCheckResult> => {
   const endpoint = BackendUri + '/invitee/code/check/' + code;
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -14,7 +19,7 @@ const CodeCheck = async (code: string): Promise<boolean> => {
     }
   });
 
-  return res.valid;
+  return res;
 };
 
 const UsernameCheck = async (username: string): Promise<boolean> => {

@@ -14,6 +14,7 @@ export interface InviteCode extends InviteCodeProps {
   code: string;
   invite_count: number; // Only valid in CodeList api
   is_valid: boolean;
+  invalid_reason: string;
 }
 
 export interface Invitee {

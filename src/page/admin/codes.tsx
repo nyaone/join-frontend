@@ -22,6 +22,7 @@ const DefaultCode: InviteCode = {
   code: '',
   invite_count: 0,
   is_valid: true,
+  invalid_reason: '',
   ...DefaultCodeProps,
 };
 
@@ -36,9 +37,11 @@ const AdminCodes = () => {
   const [isShowingResult, setShowingResult] = useState(false);
   const [result, setResult] = useState<{
     success: boolean;
+    title: string;
     message: string;
   }>({
     success: false,
+    title: '',
     message: '',
   });
 
@@ -50,6 +53,7 @@ const AdminCodes = () => {
       } catch (e: any) {
         setResult({
           success: false,
+          title: '出错啦',
           message: e.message,
         });
         setShowingResult(true);
@@ -72,11 +76,13 @@ const AdminCodes = () => {
         await copyInviteLink(newCode.code);
         setResult({
           success: true,
+          title: '成功',
           message: `邀请码创建成功！链接已经在剪贴板里啦，快去分享吧`,
         });
       } catch (e: any) {
         setResult({
           success: false,
+          title: '出错啦',
           message: e.message,
         });
       }
@@ -93,11 +99,13 @@ const AdminCodes = () => {
         setInviteCodes(updatedInviteCodesList);
         setResult({
           success: true,
+          title: '成功',
           message: `邀请码设置已更新`,
         });
       } catch (e: any) {
         setResult({
           success: false,
+          title: '出错啦',
           message: e.message,
         });
       }
@@ -154,7 +162,7 @@ const AdminCodes = () => {
                   scope="col"
                   className="hidden px-3 py-3.5 text-left text-sm font-semibold text-gray-900 sm:table-cell"
                 >
-                  有效
+                  状态
                 </th>
               </tr>
             </thead>
@@ -162,9 +170,7 @@ const AdminCodes = () => {
               {inviteCodes.map((code) => (
                 <tr
                   key={code.code}
-                  className={`cursor-pointer transition-colors hover:bg-gray-100 ${
-                    code.is_valid ? 'bg-green-100' : 'bg-red-100'
-                  } sm:bg-transparent`}
+                  className="cursor-pointer transition-colors hover:bg-gray-100"
                   onClick={() => {
                     setCurrentEditingCode(code);
                     setCreatingNew(false);
@@ -176,16 +182,34 @@ const AdminCodes = () => {
                     <dl className="font-normal lg:hidden">
                       <dd className="mt-1 truncate text-gray-700">{code.comment}</dd>
                       <dd className="mt-1 truncate text-gray-500 md:hidden">邀请了 {code.invite_count} 人</dd>
+                      <dd className="mt-1 truncate sm:hidden">
+                        {code.is_valid ? (
+                          <span className="text-green-500">有效的</span>
+                        ) : (
+                          <span className="text-red-500">失效原因： {code.invalid_reason}</span>
+                        )}
+                      </dd>
                     </dl>
                   </td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{code.comment}</td>
                   <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">{code.invite_count}</td>
-                  <td className="hidden px-3 py-4 text-sm text-gray-500 sm:table-cell">
-                    {code.is_valid ? (
-                      <CheckCircleIcon className={'h-6 w-6 text-green-500'} />
-                    ) : (
-                      <XCircleIcon className={'h-6 w-6 text-red-500'} />
-                    )}
+                  <td
+                    className={`hidden px-3 py-4 text-sm text-gray-500 transition-colors sm:table-cell ${
+                      code.is_valid ? 'text-green-500 hover:text-green-300' : 'text-red-500 hover:text-red-300'
+                    }`}
+                    onClick={(ev) => {
+                      ev.stopPropagation();
+
+                      setResult({
+                        success: code.is_valid,
+                        title: code.is_valid ? '邀请码是有效的' : '邀请码已失效',
+                        message: code.is_valid ? '邀请码没问题，快去分享吧' : code.invalid_reason,
+                      });
+
+                      setShowingResult(true);
+                    }}
+                  >
+                    {code.is_valid ? <CheckCircleIcon className={'h-6 w-6'} /> : <XCircleIcon className={'h-6 w-6'} />}
                   </td>
                 </tr>
               ))}
@@ -203,7 +227,7 @@ const AdminCodes = () => {
       />
       <ResultModal
         success={result.success}
-        title={result.success ? '成功' : '出错啦'}
+        title={result.title}
         onConfirm={() => setShowingResult(false)}
         isOpen={isShowingResult}
         setOpen={setShowingResult}

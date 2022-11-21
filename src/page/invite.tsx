@@ -7,6 +7,7 @@ import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/20/soli
 import LoadingModal from '@/component/loadingModal';
 import Loading from '@/common/icons/loading';
 import ResultModal from '@/component/resultModal';
+import { CodeCheckResult } from '@/common/api/invitee';
 
 const Invite = () => {
   const { code } = useParams();
@@ -14,7 +15,10 @@ const Invite = () => {
   const [isLoading, setLoading] = useState(false);
 
   const [isValidatingInviteCode, setValidatingInviteCode] = useState(false);
-  const [isInviteCodeValid, setInviteCodeValid] = useState(false);
+  const [isInviteCodeValid, setInviteCodeValid] = useState<CodeCheckResult>({
+    valid: false,
+    reason: '未初始化',
+  });
 
   const [isValidatingUsername, setValidatingUsername] = useState(false);
   const [isUsernameValidated, setUsernameValidated] = useState(false);
@@ -52,7 +56,7 @@ const Invite = () => {
   };
 
   const doRegister = async () => {
-    if (!inviteCode || !isInviteCodeValid || !username || !isUsernameValidated || !isUsernameValid) {
+    if (!inviteCode || !isInviteCodeValid.valid || !username || !isUsernameValidated || !isUsernameValid) {
       // Invalid invite code
       return;
     }
@@ -81,16 +85,26 @@ const Invite = () => {
     const validateInviteCode = async () => {
       setValidatingInviteCode(true);
 
-      if (
-        inviteCode &&
-        /^\w{8}(?:-\w{4}){3}-\w{12}$/.test(inviteCode) && // Check format (UUID)
-        (await API.InviteeAPI.CodeCheck(inviteCode)) // Check in API
-      ) {
-        // Code is valid
-        setInviteCodeValid(true);
+      if (!inviteCode) {
+        setInviteCodeValid({
+          valid: false,
+          reason: '值无效',
+        });
+      } else if (!/^\w{8}(?:-\w{4}){3}-\w{12}$/.test(inviteCode)) {
+        setInviteCodeValid({
+          valid: false,
+          reason: '格式错误',
+        });
       } else {
-        // Invalid
-        setInviteCodeValid(false);
+        try {
+          const result = await API.InviteeAPI.CodeCheck(inviteCode);
+          setInviteCodeValid(result);
+        } catch (e) {
+          setInviteCodeValid({
+            valid: false,
+            reason: '验证请求失败',
+          });
+        }
       }
 
       setValidatingInviteCode(false);
@@ -113,9 +127,19 @@ const Invite = () => {
               <div className="mt-8">
                 <div className="mt-6">
                   <div className={'mt-4'}>
-                    <label htmlFor="inviteCode" className="block text-sm font-medium text-gray-700">
-                      邀请码
-                    </label>
+                    <div className="flex justify-between">
+                      <label htmlFor="inviteCode" className="block text-sm font-medium text-gray-700">
+                        邀请码
+                      </label>
+                      <span
+                        className={`text-sm ${
+                          isValidatingInviteCode || isInviteCodeValid.valid ? 'hidden' : 'text-red-600'
+                        }`}
+                        id="inviteCode-message"
+                      >
+                        {isInviteCodeValid.reason}
+                      </span>
+                    </div>
                     <div className="relative mt-1 rounded-md shadow-sm">
                       <input
                         type="text"
@@ -124,19 +148,20 @@ const Invite = () => {
                         className={`block w-full rounded-md pr-10 focus:border-primary focus:outline-none focus:ring-primary sm:text-sm ${
                           isValidatingInviteCode
                             ? 'border-primary'
-                            : isInviteCodeValid
+                            : isInviteCodeValid.valid
                             ? 'border-green-300 text-green-900'
                             : 'border-red-300 text-red-900'
                         } disabled:bg-gray-50`}
-                        aria-invalid={!isValidatingInviteCode && !isInviteCodeValid}
+                        aria-invalid={!isValidatingInviteCode && !isInviteCodeValid.valid}
+                        aria-describedby="inviteCode-message"
                         value={inviteCode}
                         onChange={(ev) => setInviteCode(ev.target.value)}
-                        disabled={isValidatingInviteCode || isInviteCodeValid || isLoading}
+                        disabled={isValidatingInviteCode || isInviteCodeValid.valid || isLoading}
                       />
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                         {isValidatingInviteCode ? (
                           <Loading className="h-5 w-5 text-primary" aria-hidden="true" />
-                        ) : isInviteCodeValid ? (
+                        ) : isInviteCodeValid.valid ? (
                           <CheckCircleIcon className="h-5 w-5 text-green-500" aria-hidden="true" />
                         ) : (
                           <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
@@ -216,7 +241,7 @@ const Invite = () => {
                       className="flex w-full justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-deeper focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-deeper"
                       disabled={
                         isValidatingInviteCode ||
-                        !isInviteCodeValid ||
+                        !isInviteCodeValid.valid ||
                         isValidatingUsername ||
                         !isUsernameValid ||
                         !password ||
