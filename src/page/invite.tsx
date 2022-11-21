@@ -8,6 +8,7 @@ import LoadingModal from '@/component/loadingModal';
 import Loading from '@/common/icons/loading';
 import ResultModal from '@/component/resultModal';
 import { CodeCheckResult } from '@/common/api/invitee';
+import { ToSLink } from '@/common/settings';
 
 const Invite = () => {
   const { code } = useParams();
@@ -31,6 +32,8 @@ const Invite = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordSame, setPasswordSame] = useState(false);
   const [isPasswordChecked, setPasswordChecked] = useState(false);
+
+  const [isAcceptToS, setAcceptToS] = useState(false);
 
   const [isShowingResult, setShowingResult] = useState(false);
   const [result, setResult] = useState<{
@@ -293,6 +296,32 @@ const Invite = () => {
                     </div>
                   </div>
 
+                  <div className="relative mt-4 flex items-start">
+                    <div className="flex h-6 items-center">
+                      <input
+                        id="acceptToS"
+                        name="acceptToS"
+                        type="checkbox"
+                        className="h-5 w-5 cursor-pointer rounded border-gray-300 text-primary focus:ring-primary"
+                        checked={isAcceptToS}
+                        onChange={(ev) => setAcceptToS(ev.target.checked)}
+                      />
+                    </div>
+                    <div className="text-md ml-3">
+                      <label htmlFor="comments" className="font-medium text-gray-700">
+                        已阅读并同意{' '}
+                        <a
+                          href={ToSLink}
+                          target={'_blank'}
+                          rel={'noreferrer'}
+                          className={'text-primary transition-colors hover:text-deeper'}
+                        >
+                          服务条款
+                        </a>
+                      </label>
+                    </div>
+                  </div>
+
                   <div className={'mt-6'}>
                     <button
                       type="button"
@@ -309,6 +338,8 @@ const Invite = () => {
                         !password || // Password not set
                         !isPasswordChecked || // Password is not checked
                         !isPasswordSame || // Password is not same
+                        // ToS
+                        !isAcceptToS || // User didn't check the ToS accept option
                         // Loading
                         isLoading // Something is loading
                       }
