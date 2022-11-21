@@ -261,7 +261,7 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
                                 type="datetime-local"
                                 name="registerTimeEnd"
                                 id="registerTimeEnd"
-                                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
+                                className="block w-full rounded-l-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
                                 defaultValue={formatTime(registerTimeEnd.toString())}
                                 onChange={(ev) => {
                                   setRegisterTimeEnd(new Date(ev.target.value));
