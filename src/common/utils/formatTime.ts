@@ -2,12 +2,11 @@
 const formatTime = (timeStr: string, forHuman?: boolean): string => {
   try {
     const time = new Date(timeStr);
-    return `${time.getFullYear().toString()}${forHuman ? '年' : '-'}${time.getMonth().toString().padStart(2, '0')}${
-      forHuman ? '月' : '-'
-    }${time.getDate().toString().padStart(2, '0')}${forHuman ? '日 ' : 'T'}${time
-      .getHours()
+    return `${time.getFullYear().toString()}${forHuman ? '年' : '-'}${(time.getMonth() + 1)
       .toString()
-      .padStart(2, '0')}:${
+      .padStart(2, '0')}${forHuman ? '月' : '-'}${time.getDate().toString().padStart(2, '0')}${
+      forHuman ? '日 ' : 'T'
+    }${time.getHours().toString().padStart(2, '0')}:${
       time.getMinutes().toString().padStart(2, '0')
       // }:${
       //   time.getSeconds().toString().padStart(2, '0')
