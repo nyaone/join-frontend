@@ -28,6 +28,10 @@ const Invite = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [isPasswordSame, setPasswordSame] = useState(false);
+  const [isPasswordChecked, setPasswordChecked] = useState(false);
+
   const [isShowingResult, setShowingResult] = useState(false);
   const [result, setResult] = useState<{
     success: boolean;
@@ -53,6 +57,16 @@ const Invite = () => {
 
     setValidatingUsername(false);
     setUsernameValidated(true);
+  };
+
+  const checkPasswordSame = () => {
+    if (password === '' || confirmPassword === '') {
+      // Not ready
+      return;
+    }
+
+    setPasswordSame(password === confirmPassword);
+    setPasswordChecked(true);
   };
 
   const doRegister = async () => {
@@ -227,11 +241,55 @@ const Invite = () => {
                         id="password"
                         name="password"
                         type="password"
-                        className="sm:text-smdisabled:border-gray-200 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-primary disabled:bg-gray-50 disabled:text-gray-500"
+                        className="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-primary focus:outline-none focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
                         value={password}
                         onChange={(ev) => setPassword(ev.target.value)}
                         disabled={isLoading}
+                        onBlur={() => checkPasswordSame()}
                       />
+                    </div>
+                  </div>
+
+                  <div className={'mt-4'}>
+                    <div className="flex justify-between">
+                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                        确认密码
+                      </label>
+                      <span
+                        className={`text-sm ${!isPasswordChecked || isPasswordSame ? 'hidden' : 'text-red-600'}`}
+                        id="confirmPassword-message"
+                      >
+                        密码不一致哦
+                      </span>
+                    </div>
+                    <div className="relative mt-1 rounded-md shadow-sm">
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        id="confirmPassword"
+                        className={`block w-full rounded-md pr-10 focus:border-primary focus:outline-none focus:ring-primary sm:text-sm ${
+                          !isPasswordChecked
+                            ? 'border-gray-300'
+                            : isPasswordSame
+                            ? 'border-green-300 text-green-900'
+                            : 'border-red-300 text-red-900'
+                        } disabled:bg-gray-50`}
+                        aria-invalid={isPasswordChecked && !isPasswordSame}
+                        aria-describedby="confirmPassword-message"
+                        value={confirmPassword}
+                        onChange={(ev) => setConfirmPassword(ev.target.value)}
+                        disabled={isLoading}
+                        onBlur={() => checkPasswordSame()}
+                      />
+                      {isPasswordChecked && (
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                          {isPasswordSame ? (
+                            <CheckCircleIcon className="h-5 w-5 text-green-500" aria-hidden="true" />
+                          ) : (
+                            <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -240,12 +298,19 @@ const Invite = () => {
                       type="button"
                       className="flex w-full justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm transition-colors hover:bg-deeper focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 disabled:cursor-not-allowed disabled:bg-deeper"
                       disabled={
-                        isValidatingInviteCode ||
-                        !isInviteCodeValid.valid ||
-                        isValidatingUsername ||
-                        !isUsernameValid ||
-                        !password ||
-                        isLoading
+                        // Invite Code
+                        isValidatingInviteCode || // Invite code is still validating
+                        !isInviteCodeValid.valid || // Invite code is invalid
+                        // Username
+                        isValidatingUsername || // Username is still validating
+                        !isUsernameValidated || // Username is not validated yet
+                        !isUsernameValid || // Username is invalid
+                        // Password
+                        !password || // Password not set
+                        !isPasswordChecked || // Password is not checked
+                        !isPasswordSame || // Password is not same
+                        // Loading
+                        isLoading // Something is loading
                       }
                       onClick={() => doRegister()}
                     >
