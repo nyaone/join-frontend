@@ -1,12 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Invitee } from '@/common/api/admin';
 import API from '@/common/api';
 import ResultModal from '@/component/resultModal';
 import LoadingModal from '@/component/loadingModal';
 import formatTime from '@/common/utils/formatTime';
+import { AdminInstanceKey } from '@/common/settings';
 
 const AdminInvitees = () => {
   const [isLoading, setLoading] = useState(true);
+  const isNotLoaded = useRef(true);
+
   const [invitees, setInvitees] = useState<Invitee[]>([]);
 
   const [instanceUri, setInstanceUri] = useState('');
@@ -23,10 +26,16 @@ const AdminInvitees = () => {
   useEffect(() => {
     const initInvitees = async () => {
       try {
-        const ines = await API.AdminAPI.InviteeList();
-        const instanceUri = await API.PublicAPI.Instance();
-        setInvitees(ines);
+        // Get instance from sessionStorage
+        let instanceUri = sessionStorage.getItem(AdminInstanceKey);
+        if (!instanceUri) {
+          instanceUri = await API.PublicAPI.Instance();
+          sessionStorage.setItem(AdminInstanceKey, instanceUri);
+        }
         setInstanceUri(instanceUri);
+
+        const ines = await API.AdminAPI.InviteeList();
+        setInvitees(ines);
       } catch (e: any) {
         setResult({
           success: false,
@@ -38,8 +47,11 @@ const AdminInvitees = () => {
       setLoading(false);
     };
 
-    initInvitees();
-  }, []);
+    if (isNotLoaded.current) {
+      isNotLoaded.current = false;
+      initInvitees();
+    }
+  }, [isNotLoaded]);
 
   return (
     <>

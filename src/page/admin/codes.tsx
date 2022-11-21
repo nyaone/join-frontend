@@ -1,5 +1,5 @@
 import type { InviteCode, InviteCodeProps } from '@/common/api/admin';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import API from '@/common/api';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import EditCodeModal from '@/component/admin/editCodeModal';
@@ -28,6 +28,7 @@ const DefaultCode: InviteCode = {
 
 const AdminCodes = () => {
   const [isLoading, setLoading] = useState(true);
+  const isNotLoaded = useRef(true);
 
   const [inviteCodes, setInviteCodes] = useState<InviteCode[]>([]);
   const [currentEditingCode, setCurrentEditingCode] = useState<InviteCode>(DefaultCode);
@@ -62,8 +63,11 @@ const AdminCodes = () => {
       setLoading(false);
     };
 
-    initCodes();
-  }, []);
+    if (isNotLoaded.current) {
+      isNotLoaded.current = false;
+      initCodes();
+    }
+  }, [isNotLoaded]);
 
   const saveOrCreateCode = async (isNew: boolean, code: InviteCode) => {
     setLoading(true);

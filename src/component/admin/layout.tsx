@@ -34,6 +34,8 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SideBarProps) => {
   const location = useLocation();
   const nav = useNavigate();
 
+  const nonRequested = useRef(true);
+
   useEffect(() => {
     const initRedirect = async () => {
       try {
@@ -44,8 +46,11 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SideBarProps) => {
       }
     };
 
-    initRedirect();
-  }, [nav]);
+    if (nonRequested.current) {
+      nonRequested.current = false;
+      initRedirect();
+    }
+  }, [nav, nonRequested]);
 
   return (
     <>
