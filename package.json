@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": false,
   "dependencies": {
-    "@craco/craco": "^6.4.5",
+    "@craco/craco": "^7.0.0",
     "@heroicons/react": "^2.0.13",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
