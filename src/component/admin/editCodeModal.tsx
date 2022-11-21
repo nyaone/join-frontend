@@ -37,6 +37,7 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
   const [registerTimeStart, setRegisterTimeStart] = useState<Date>(new Date());
   const [registerTimeEnd, setRegisterTimeEnd] = useState<Date>(new Date());
   const [isRegisterTimeEndValid, setRegisterTimeEndValid] = useState<boolean>(false);
+  const [registerCoolDown, setRegisterCoolDown] = useState<number>(0);
 
   const [isEditing, setEditing] = useState(false); // Default view mode
 
@@ -55,6 +56,7 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
     setRegisterTimeStart(code.register_time_start);
     setRegisterTimeEnd(code.register_time_end);
     setRegisterTimeEndValid(code.is_register_time_end_valid);
+    setRegisterCoolDown(code.register_cool_down);
   }, [code, isOpen]);
 
   useEffect(() => {
@@ -290,6 +292,26 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
                             </button>
                           </div>
                         </div>
+
+                        <div className="mt-4">
+                          <label htmlFor="registerCoolDown" className="block text-sm font-medium text-gray-700">
+                            注册冷却时间（秒）
+                          </label>
+                          <div className="mt-1">
+                            <input
+                              type="number"
+                              min={0}
+                              name="registerCoolDown"
+                              id="registerCoolDown"
+                              className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
+                              value={registerCoolDown}
+                              onChange={(ev) => {
+                                setRegisterCoolDown(parseInt(ev.target.value));
+                              }}
+                              disabled={!isEditing}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -312,6 +334,7 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
                           register_time_start: registerTimeStart,
                           register_time_end: registerTimeEnd,
                           is_register_time_end_valid: isRegisterTimeEndValid,
+                          register_cool_down: registerCoolDown,
                         });
                       }
                     }}

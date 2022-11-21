@@ -7,6 +7,7 @@ export interface InviteCodeProps {
   register_time_start: Date;
   register_time_end: Date;
   is_register_time_end_valid: boolean;
+  register_cool_down: number;
 }
 
 export interface InviteCode extends InviteCodeProps {

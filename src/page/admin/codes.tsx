@@ -15,6 +15,7 @@ const DefaultCodeProps: InviteCodeProps = {
   register_time_start: new Date(),
   register_time_end: new Date(),
   is_register_time_end_valid: false,
+  register_cool_down: 0,
 };
 
 const DefaultCode: InviteCode = {
