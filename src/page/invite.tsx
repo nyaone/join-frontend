@@ -87,6 +87,7 @@ const Invite = () => {
         success: true,
         message: instanceUri,
       });
+      setUsernameValidated(false);
     } catch (e: any) {
       setResult({
         success: false,
