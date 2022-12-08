@@ -3,10 +3,11 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Switch, Transition } from '@headlessui/react';
 import {
-  CheckIcon,
   ClipboardDocumentCheckIcon,
   ClipboardDocumentIcon,
+  ClockIcon,
   LockClosedIcon,
+  SparklesIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
 import copyInviteLink from '@/common/utils/copyInviteLink';
@@ -280,13 +281,13 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
                             >
                               {isRegisterTimeEndValid ? (
                                 <>
-                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  <span>已启用</span>
+                                  <ClockIcon className="h-5 w-5" aria-hidden="true" />
+                                  <span>会过期</span>
                                 </>
                               ) : (
                                 <>
-                                  <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                                  <span>已禁用</span>
+                                  <SparklesIcon className="h-5 w-5" aria-hidden="true" />
+                                  <span>永不过期</span>
                                 </>
                               )}
                             </button>
