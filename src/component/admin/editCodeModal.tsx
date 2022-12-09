@@ -3,6 +3,7 @@ import type { Dispatch, SetStateAction } from 'react';
 import { Fragment, useEffect, useState } from 'react';
 import { Dialog, Switch, Transition } from '@headlessui/react';
 import {
+  CheckIcon,
   ClipboardDocumentCheckIcon,
   ClipboardDocumentIcon,
   ClockIcon,
