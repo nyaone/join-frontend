@@ -45,7 +45,11 @@ const LoginModal = ({ isLoginModalOpen, setLoginModalOpen }: LoginModalProps) =>
 
   return (
     <>
-      <ModalWrapper isOpen={isLoginModalOpen} onClose={() => setLoginModalOpen(false)}>
+      <ModalWrapper
+        isOpen={isLoginModalOpen}
+        onClose={() => setLoginModalOpen(false)}
+        className={'sm:w-full sm:max-w-sm'}
+      >
         <div>
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100">
             <RocketLaunchIcon className="h-6 w-6 text-indigo-600" aria-hidden="true" />

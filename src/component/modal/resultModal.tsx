@@ -14,7 +14,7 @@ export interface ResultModalProps {
 }
 
 const ResultModal = ({ success, title, onConfirm, children, isOpen, setOpen }: PropsWithChildren<ResultModalProps>) => (
-  <ModalWrapper isOpen={isOpen} onClose={setOpen}>
+  <ModalWrapper isOpen={isOpen} onClose={setOpen} className={'sm:w-full sm:max-w-sm'}>
     <div>
       <div
         className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${

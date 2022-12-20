@@ -321,7 +321,7 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
   );
 
   return (
-    <ModalWrapper isOpen={isOpen} onClose={setOpen}>
+    <ModalWrapper isOpen={isOpen} onClose={setOpen} className={'sm:w-full sm:max-w-lg'}>
       <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
         <button
           type="button"
