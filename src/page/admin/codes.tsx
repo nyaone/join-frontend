@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import API from '@/common/api';
 import { PlusIcon } from '@heroicons/react/24/solid';
 import EditCodeModal from '@/component/admin/editCodeModal';
-import ResultModal from '@/component/resultModal';
+import ResultModal from '@/component/modal/resultModal';
 import copyInviteLink from '@/common/utils/copyInviteLink';
-import LoadingModal from '@/component/loadingModal';
+import LoadingModal from '@/component/modal/loadingModal';
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 
 const DefaultCodeProps: InviteCodeProps = {

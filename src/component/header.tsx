@@ -2,7 +2,7 @@ import { Popover } from '@headlessui/react';
 import { useState } from 'react';
 import NyaOneLogo from '@/asset/NyaOneLogo';
 import { Link } from 'react-router-dom';
-import LoginModal from '@/component/loginModal';
+import LoginModal from '@/component/modal/loginModal';
 
 interface HeaderProps {
   loginButton?: boolean;

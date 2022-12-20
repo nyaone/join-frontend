@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/component/header';
 import Loading from '@/common/icons/loading';
 import { useEffect, useRef, useState } from 'react';
-import ResultModal from '@/component/resultModal';
+import ResultModal from '@/component/modal/resultModal';
 import API from '@/common/api';
 import { AdminSessionKey, AdminUsernameKey } from '@/common/settings';
 import Footer from '@/component/footer';

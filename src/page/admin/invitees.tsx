@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Invitee } from '@/common/api/admin';
 import API from '@/common/api';
-import ResultModal from '@/component/resultModal';
-import LoadingModal from '@/component/loadingModal';
+import ResultModal from '@/component/modal/resultModal';
+import LoadingModal from '@/component/modal/loadingModal';
 import formatTime from '@/common/utils/formatTime';
 import { AdminInstanceKey } from '@/common/settings';
 

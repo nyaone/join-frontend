@@ -4,9 +4,9 @@ import NyaOneLogo from '@/asset/NyaOneLogo';
 import { useEffect, useState } from 'react';
 import API from '@/common/api';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid';
-import LoadingModal from '@/component/loadingModal';
+import LoadingModal from '@/component/modal/loadingModal';
 import Loading from '@/common/icons/loading';
-import ResultModal from '@/component/resultModal';
+import ResultModal from '@/component/modal/resultModal';
 import { CodeCheckResult } from '@/common/api/invitee';
 import { ToSLink } from '@/common/settings';
 
