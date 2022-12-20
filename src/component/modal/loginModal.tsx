@@ -71,6 +71,11 @@ const LoginModal = ({ isLoginModalOpen, setLoginModalOpen }: LoginModalProps) =>
                   disabled={isLoading}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      doLogin();
+                    }
+                  }}
                 />
               </div>
             </div>
