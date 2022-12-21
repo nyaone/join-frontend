@@ -120,11 +120,8 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
             name="comment"
             id="comment"
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
-            value={comment}
-            onChange={(ev) => {
-              setComment(ev.target.value);
-            }}
             disabled={!isEditing}
+            defaultValue={comment}
           />
         </div>
       </div>
@@ -183,11 +180,8 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
             name="registerCountLimit"
             id="registerCountLimit"
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
-            value={registerCountLimit}
-            onChange={(ev) => {
-              setRegisterCountLimit(parseInt(ev.target.value));
-            }}
             disabled={!isEditing}
+            defaultValue={registerCountLimit}
           />
         </div>
       </div>
@@ -203,9 +197,6 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
             id="registerTimeStart"
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
             defaultValue={formatTime(registerTimeStart.toString())}
-            onChange={(ev) => {
-              setRegisterTimeStart(new Date(ev.target.value));
-            }}
             disabled={!isEditing}
           />
         </div>
@@ -223,9 +214,6 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
               id="registerTimeEnd"
               className="block w-full rounded-l-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
               defaultValue={formatTime(registerTimeEnd.toString())}
-              onChange={(ev) => {
-                setRegisterTimeEnd(new Date(ev.target.value));
-              }}
               disabled={!isEditing || !isRegisterTimeEndValid}
             />
           </div>
@@ -264,11 +252,8 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
             name="registerCoolDown"
             id="registerCoolDown"
             className="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 sm:text-sm"
-            value={registerCoolDown}
-            onChange={(ev) => {
-              setRegisterCoolDown(parseInt(ev.target.value));
-            }}
             disabled={!isEditing}
+            defaultValue={registerCoolDown}
           />
         </div>
       </div>
@@ -278,24 +263,11 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
   const Actions = () => (
     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
       <button
-        type="button"
+        type={isEditing ? 'submit' : 'button'}
         className="inline-flex w-full justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-base font-medium text-white shadow-sm transition-colors hover:bg-deeper focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
         onClick={() => {
           if (!isEditing) {
             setEditing(true);
-          } else {
-            setEditing(false);
-            setOpen(false);
-            doSave(isCreatingNew, {
-              ...code,
-              comment: comment,
-              is_activate: isActivate,
-              register_count_limit: registerCountLimit,
-              register_time_start: registerTimeStart,
-              register_time_end: registerTimeEnd,
-              is_register_time_end_valid: isRegisterTimeEndValid,
-              register_cool_down: registerCoolDown,
-            });
           }
         }}
       >
@@ -320,29 +292,48 @@ const EditCodeModal = ({ code, isCreatingNew, isOpen, setOpen, doSave }: EditCod
     </div>
   );
 
+  const handleSetProperties = (ev: any) => {
+    ev.preventDefault();
+
+    setEditing(false);
+    setOpen(false);
+    doSave(isCreatingNew, {
+      ...code,
+      comment: ev.target.comment.value,
+      is_activate: isActivate,
+      register_count_limit: parseInt(ev.target.registerCountLimit.value),
+      register_time_start: new Date(ev.target.registerTimeStart.value),
+      register_time_end: new Date(ev.target.registerTimeEnd.value),
+      is_register_time_end_valid: isRegisterTimeEndValid,
+      register_cool_down: parseInt(ev.target.registerCoolDown.value),
+    });
+  };
+
   return (
     <ModalWrapper isOpen={isOpen} onClose={setOpen} className={'sm:w-full sm:max-w-lg'}>
-      <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
-        <button
-          type="button"
-          className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          onClick={() => setOpen(false)}
-        >
-          <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-        </button>
-      </div>
-      <div className="sm:flex sm:items-start">
-        <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
-          <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
-            {isCreatingNew ? '创建' : isEditing ? '编辑' : '查看'}邀请码
-          </Dialog.Title>
-          <div className="mt-4 text-left">
-            {!isCreatingNew && <Constants />}
-            <Properties />
+      <form onSubmit={handleSetProperties}>
+        <div className="absolute top-0 right-0 hidden pt-4 pr-4 sm:block">
+          <button
+            type="button"
+            className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            onClick={() => setOpen(false)}
+          >
+            <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+          </button>
+        </div>
+        <div className="sm:flex sm:items-start">
+          <div className="mt-3 w-full text-center sm:mt-0 sm:ml-4 sm:text-left">
+            <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+              {isCreatingNew ? '创建' : isEditing ? '编辑' : '查看'}邀请码
+            </Dialog.Title>
+            <div className="mt-4 text-left">
+              {!isCreatingNew && <Constants />}
+              <Properties />
+            </div>
           </div>
         </div>
-      </div>
-      <Actions />
+        <Actions />
+      </form>
     </ModalWrapper>
   );
 };
