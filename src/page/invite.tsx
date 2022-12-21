@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import IntroBanner from '@/asset/intro-banner.png';
 import NyaOneLogo from '@/asset/NyaOneLogo';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import API from '@/common/api';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/20/solid';
 import LoadingModal from '@/component/modal/loadingModal';
@@ -25,7 +25,7 @@ const Invite = () => {
   const [isUsernameValidated, setUsernameValidated] = useState(false);
   const [isUsernameValid, setUsernameValid] = useState(false);
 
-  const [inviteCode, setInviteCode] = useState(code);
+  const [inviteCode, setInviteCode] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -99,8 +99,8 @@ const Invite = () => {
     setLoading(false);
   };
 
-  useEffect(() => {
-    const validateInviteCode = async () => {
+  const validateInviteCode = useCallback(
+    async (inviteCode: string) => {
       setValidatingInviteCode(true);
 
       if (!inviteCode) {
@@ -126,10 +126,21 @@ const Invite = () => {
       }
 
       setValidatingInviteCode(false);
-    };
+    },
+    [setValidatingInviteCode, setInviteCodeValid],
+  );
 
-    validateInviteCode();
-  }, [code, inviteCode]);
+  useEffect(() => {
+    if (code) {
+      setInviteCode(code);
+    }
+  }, [code]);
+
+  useEffect(() => {
+    if (inviteCode && validateInviteCode) {
+      validateInviteCode(inviteCode);
+    }
+  }, [inviteCode, validateInviteCode]);
 
   return (
     <>

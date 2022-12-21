@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '@/component/header';
 import Loading from '@/common/icons/loading';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import ResultModal from '@/component/modal/resultModal';
 import API from '@/common/api';
 import { AdminSessionKey, AdminUsernameKey } from '@/common/settings';
@@ -17,29 +17,28 @@ const Login = () => {
 
   const nonRequested = useRef(true);
 
+  const doLogin = useCallback(async () => {
+    try {
+      const session = await API.LoginAPI.Confirm(token!);
+      // Save session
+      sessionStorage.setItem(AdminSessionKey, session.session);
+      sessionStorage.setItem(AdminUsernameKey, session.username);
+
+      // Redirect to admin page
+      nav('/admin/codes');
+    } catch (e: any) {
+      setResult(e.message);
+      setShowingResult(true);
+    }
+  }, [nav, token]);
+
   useEffect(() => {
     // Do login
-
-    const doLogin = async () => {
-      try {
-        const session = await API.LoginAPI.Confirm(token!);
-        // Save session
-        sessionStorage.setItem(AdminSessionKey, session.session);
-        sessionStorage.setItem(AdminUsernameKey, session.username);
-
-        // Redirect to admin page
-        nav('/admin/codes');
-      } catch (e: any) {
-        setResult(e.message);
-        setShowingResult(true);
-      }
-    };
-
-    if (token && nonRequested.current) {
+    if (token && nonRequested.current && doLogin) {
       nonRequested.current = false;
       doLogin();
     }
-  }, [nav, token]);
+  }, [doLogin, token]);
 
   const closeModal = () => {
     setShowingResult(false);
