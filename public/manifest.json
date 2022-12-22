@@ -1,6 +1,6 @@
 {
-  "short_name": "Join NyaOne",
-  "name": "Front-end for NyaOne join management system",
+  "short_name": "加入喵窝",
+  "name": "喵窝 - 邀请管理系统",
   "icons": [
     {
       "src": "favicon.ico",
