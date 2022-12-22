@@ -207,6 +207,73 @@ const LogoutCheck = ({ open, setOpen, onConfirm }: LogoutCheckProps) => {
   );
 };
 
+interface HeaderProps {
+  username: string;
+  checkLogout: () => void;
+  setSidebarOpen: (state: boolean) => void;
+}
+
+const Header = ({ username, checkLogout, setSidebarOpen }: HeaderProps) => (
+  <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
+    <button
+      type="button"
+      className="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden"
+      onClick={() => setSidebarOpen(true)}
+    >
+      <span className="sr-only">Open sidebar</span>
+      <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
+    </button>
+    {/* Search bar */}
+    <div className="flex flex-1 justify-between px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
+      <div className="flex flex-1"></div>
+      <div className="ml-4 flex items-center md:ml-6">
+        {/* Profile dropdown */}
+        <Menu as="div" className="relative ml-3">
+          <div>
+            <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
+              <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
+                <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </span>
+              <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">{username}</span>
+              <ChevronDownIcon
+                className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
+                aria-hidden="true"
+              />
+            </Menu.Button>
+          </div>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <span
+                    className={classNames(
+                      active ? 'bg-gray-100' : '',
+                      'block cursor-pointer px-4 py-2 text-sm text-red-400',
+                    )}
+                    onClick={() => checkLogout()}
+                  >
+                    退出登录
+                  </span>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      </div>
+    </div>
+  </div>
+);
+
 const AdminLayout = ({ children }: PropsWithChildren<AdminLayoutProps>) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isLogoutCheckOpen, setLogoutCheckOpen] = useState(false);
@@ -238,64 +305,7 @@ const AdminLayout = ({ children }: PropsWithChildren<AdminLayoutProps>) => {
         <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <div className="flex flex-1 flex-col lg:pl-64">
-          <div className="flex h-16 flex-shrink-0 border-b border-gray-200 bg-white lg:border-none">
-            <button
-              type="button"
-              className="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-sky-500 lg:hidden"
-              onClick={() => setSidebarOpen(true)}
-            >
-              <span className="sr-only">Open sidebar</span>
-              <Bars3CenterLeftIcon className="h-6 w-6" aria-hidden="true" />
-            </button>
-            {/* Search bar */}
-            <div className="flex flex-1 justify-between px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
-              <div className="flex flex-1"></div>
-              <div className="ml-4 flex items-center md:ml-6">
-                {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
-                  <div>
-                    <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50">
-                      <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
-                        <svg className="h-full w-full text-gray-300" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                      </span>
-                      <span className="ml-3 hidden text-sm font-medium text-gray-700 lg:block">{username}</span>
-                      <ChevronDownIcon
-                        className="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
-                        aria-hidden="true"
-                      />
-                    </Menu.Button>
-                  </div>
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <span
-                            className={classNames(
-                              active ? 'bg-gray-100' : '',
-                              'block cursor-pointer px-4 py-2 text-sm text-red-400',
-                            )}
-                            onClick={() => checkLogout()}
-                          >
-                            退出登录
-                          </span>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
-            </div>
-          </div>
+          <Header username={username} checkLogout={checkLogout} setSidebarOpen={setSidebarOpen} />
           <main className="flex-1 pb-1">
             <div className="bg-white shadow">
               <div className="px-4 sm:px-6 lg:mx-auto lg:max-w-6xl lg:px-8">
