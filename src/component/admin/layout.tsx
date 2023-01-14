@@ -116,6 +116,7 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SideBarProps) => {
                           'group flex items-center rounded-md px-2 py-2 text-base font-medium',
                         )}
                         aria-current={location.pathname === item.href ? 'page' : undefined}
+                        onClick={() => setSidebarOpen(false)}
                       >
                         <item.icon className="mr-4 h-6 w-6 flex-shrink-0 text-sky-200" aria-hidden="true" />
                         {item.name}
