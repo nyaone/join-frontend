@@ -30,12 +30,12 @@ const Hero = ({ doLogin }: HeroProps) => (
               >
                 文档
               </a>
-              <button
+              <span
                 onClick={doLogin}
-                className="flex items-center justify-center rounded-md border border-transparent bg-primary bg-opacity-80 px-4 py-3 text-xl font-semibold text-white shadow-sm transition-colors hover:bg-deeper sm:px-8"
+                className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-primary bg-opacity-80 px-4 py-3 text-xl font-semibold text-white shadow-sm transition-colors hover:bg-deeper sm:px-8"
               >
                 登录
-              </button>
+              </span>
             </div>
           </div>
         </div>
