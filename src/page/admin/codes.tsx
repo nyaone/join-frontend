@@ -108,14 +108,29 @@ const AdminCodes = () => {
           setCreatingNew={setCreatingNew}
           setEditModalOpen={setEditModalOpen}
         />
-        <CodesTable
-          inviteCodes={inviteCodes}
-          setCurrentEditingCode={setCurrentEditingCode}
-          setCreatingNew={setCreatingNew}
-          setEditModalOpen={setEditModalOpen}
-          setResult={setResult}
-          setShowingResult={setShowingResult}
-        />
+        {inviteCodes.length > 0 ? (
+          <CodesTable
+            inviteCodes={inviteCodes}
+            setCurrentEditingCode={setCurrentEditingCode}
+            setCreatingNew={setCreatingNew}
+            setEditModalOpen={setEditModalOpen}
+            setResult={setResult}
+            setShowingResult={setShowingResult}
+          />
+        ) : (
+          <div className={'p-4'}>
+            还没有邀请码哦，赶紧
+            <span
+              className={
+                'cursor-pointer px-1 underline decoration-primary decoration-wavy decoration-2 underline-offset-4 transition-colors hover:text-primary'
+              }
+              onClick={() => setEditModalOpen(true)}
+            >
+              创建一个
+            </span>
+            吧！
+          </div>
+        )}
       </div>
 
       {/*Modals*/}
