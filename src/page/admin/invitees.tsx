@@ -34,11 +34,11 @@ const AdminInvitees = () => {
   useEffect(() => {
     const initInvitees = async () => {
       try {
-        // Get instance from sessionStorage
-        let instanceUri = sessionStorage.getItem(AdminInstanceKey);
+        // Get instance from localStorage
+        let instanceUri = localStorage.getItem(AdminInstanceKey);
         if (!instanceUri) {
           instanceUri = await API.PublicAPI.Instance();
-          sessionStorage.setItem(AdminInstanceKey, instanceUri);
+          localStorage.setItem(AdminInstanceKey, instanceUri);
         }
         setInstanceUri(instanceUri);
 

@@ -1,7 +1,7 @@
 import { BackendUri } from '@/common/settings';
 
-const Request = async (username: string): Promise<string> => {
-  const endpoint = BackendUri + '/login/request/' + username;
+const Request = async (): Promise<string> => {
+  const endpoint = BackendUri + '/login/request';
   const res = await fetch(endpoint, {
     method: 'POST',
   }).then((res) => {
@@ -13,7 +13,7 @@ const Request = async (username: string): Promise<string> => {
       });
     }
   });
-  return res.messaging_link;
+  return res.url;
 };
 
 const Confirm = async (
@@ -21,6 +21,8 @@ const Confirm = async (
 ): Promise<{
   session: string;
   username: string;
+  name: string;
+  avatar: string;
 }> => {
   const endpoint = BackendUri + '/login/confirm/' + token;
   const res = await fetch(endpoint, {
@@ -38,6 +40,8 @@ const Confirm = async (
   return {
     session: res.session,
     username: res.username,
+    name: res.name,
+    avatar: res.avatar,
   };
 };
 

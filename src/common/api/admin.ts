@@ -25,7 +25,7 @@ export interface Invitee {
 
 const SessionCheck = async (): Promise<boolean> => {
   const endpoint = BackendUri + '/admin/check';
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -48,7 +48,7 @@ const SessionCheck = async (): Promise<boolean> => {
 
 const CodeCount = async (): Promise<number> => {
   const endpoint = BackendUri + '/admin/code/count';
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -72,7 +72,7 @@ const CodeCount = async (): Promise<number> => {
 
 const CodeList = async (): Promise<InviteCode[]> => {
   const endpoint = BackendUri + '/admin/code/list';
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -96,7 +96,7 @@ const CodeList = async (): Promise<InviteCode[]> => {
 
 const CodeCreate = async (props: InviteCodeProps): Promise<InviteCode> => {
   const endpoint = BackendUri + '/admin/code/create';
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -123,7 +123,7 @@ const CodeCreate = async (props: InviteCodeProps): Promise<InviteCode> => {
 
 const CodeEdit = async (code: string, props: InviteCodeProps): Promise<InviteCode> => {
   const endpoint = BackendUri + '/admin/code/edit/' + code;
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -150,7 +150,7 @@ const CodeEdit = async (code: string, props: InviteCodeProps): Promise<InviteCod
 
 const InviteeCount = async (): Promise<number> => {
   const endpoint = BackendUri + '/admin/invitee/count';
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -177,7 +177,7 @@ const InviteeList = async (code?: string): Promise<Invitee[]> => {
   if (code) {
     endpoint += '/' + code;
   }
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }
@@ -201,7 +201,7 @@ const InviteeList = async (code?: string): Promise<Invitee[]> => {
 
 const Logout = async (): Promise<boolean> => {
   const endpoint = BackendUri + '/admin/logout';
-  const session = sessionStorage.getItem(AdminSessionKey);
+  const session = localStorage.getItem(AdminSessionKey);
   if (session === null) {
     throw new Error('No session set');
   }

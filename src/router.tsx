@@ -15,7 +15,7 @@ const Router = () => (
     <Route path={'/invite/:code'} element={<Invite />} />
 
     {/*For users only*/}
-    <Route path={'/login/:token'} element={<Login />} />
+    <Route path={'/login'} element={<Login />} />
 
     {/*Admin Pages*/}
     <Route path={'/admin/*'} element={<AdminPages />} />
