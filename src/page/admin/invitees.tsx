@@ -2,14 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import type { Invitee } from '@/common/api/admin';
 import API from '@/common/api';
 import ResultModal from '@/component/modal/resultModal';
-import LoadingModal from '@/component/modal/loadingModal';
 import { AdminInstanceKey } from '@/common/settings';
 import InviteesTable from '@/component/admin/invitees/inviteesTable';
+import Loading from '@/common/icons/loading';
 
-const AdminInviteesHeader = () => (
+interface AdminInviteesHeaderProps {
+  isLoading: boolean;
+}
+
+const AdminInviteesHeader = ({ isLoading }: AdminInviteesHeaderProps) => (
   <div className="flex items-center">
-    <div className="flex-auto">
+    <div className="flex flex-auto flex-row gap-3">
       <h1 className="text-xl font-semibold text-gray-900">我邀请的用户</h1>
+      <Loading
+        className={`h-5 w-5 text-primary transition-opacity duration-200 ${isLoading ? 'opacity-100' : 'opacity-0'}`}
+      />
     </div>
   </div>
 );
@@ -64,7 +71,7 @@ const AdminInvitees = () => {
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
-        <AdminInviteesHeader />
+        <AdminInviteesHeader isLoading={isLoading} />
         {invitees.length > 0 ? (
           <InviteesTable instanceUri={instanceUri} invitees={invitees} />
         ) : (
@@ -81,8 +88,6 @@ const AdminInvitees = () => {
       >
         {result.message}
       </ResultModal>
-
-      <LoadingModal isOpen={isLoading} />
     </>
   );
 };

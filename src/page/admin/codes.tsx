@@ -4,7 +4,6 @@ import API from '@/common/api';
 import EditCodeModal from '@/component/admin/codes/editCodeModal';
 import ResultModal from '@/component/modal/resultModal';
 import copyInviteLink from '@/common/utils/copyInviteLink';
-import LoadingModal from '@/component/modal/loadingModal';
 import CodesHeader from '@/component/admin/codes/codesHeader';
 import type { Result } from '@/component/admin/codes/Result';
 import CodesTable from '@/component/admin/codes/codesTable';
@@ -107,6 +106,7 @@ const AdminCodes = () => {
           setCurrentEditingCode={setCurrentEditingCode}
           setCreatingNew={setCreatingNew}
           setEditModalOpen={setEditModalOpen}
+          isLoading={isLoading}
         />
         {inviteCodes.length > 0 ? (
           <CodesTable
@@ -157,8 +157,6 @@ const AdminCodes = () => {
       >
         {result.message}
       </ResultModal>
-
-      <LoadingModal isOpen={isLoading} />
     </>
   );
 };
