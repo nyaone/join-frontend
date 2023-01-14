@@ -5,6 +5,7 @@ import ResultModal from '@/component/modal/resultModal';
 import LoadingModal from '@/component/modal/loadingModal';
 import { AdminInstanceKey } from '@/common/settings';
 import InviteesTable from '@/component/admin/invitees/inviteesTable';
+import Loading from '@/common/icons/loading';
 
 const AdminInviteesHeader = () => (
   <div className="flex items-center">
@@ -68,7 +69,7 @@ const AdminInvitees = () => {
         {invitees.length > 0 ? (
           <InviteesTable instanceUri={instanceUri} invitees={invitees} />
         ) : (
-          <div className={'p-4'}>还没有找到伙伴哦，快去发出邀请吧！</div>
+          <div className={'p-4'}>{isLoading ? <>正在努力加载中...</> : <>还没有找到伙伴哦，快去发出邀请吧！</>}</div>
         )}
       </div>
 

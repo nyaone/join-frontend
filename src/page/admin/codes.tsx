@@ -9,6 +9,7 @@ import CodesHeader from '@/component/admin/codes/codesHeader';
 import type { Result } from '@/component/admin/codes/Result';
 import CodesTable from '@/component/admin/codes/codesTable';
 import { DefaultCode } from '@/component/admin/codes/DefaultCode';
+import Loading from '@/common/icons/loading';
 
 const AdminCodes = () => {
   const [isLoading, setLoading] = useState(true);
@@ -119,16 +120,22 @@ const AdminCodes = () => {
           />
         ) : (
           <div className={'p-4'}>
-            还没有邀请码哦，赶紧
-            <span
-              className={
-                'cursor-pointer px-1 underline decoration-primary decoration-wavy decoration-2 underline-offset-4 transition-colors hover:text-primary'
-              }
-              onClick={() => setEditModalOpen(true)}
-            >
-              创建一个
-            </span>
-            吧！
+            {isLoading ? (
+              <>正在努力加载中...</>
+            ) : (
+              <>
+                还没有邀请码哦，赶紧
+                <span
+                  className={
+                    'cursor-pointer px-1 underline decoration-primary decoration-wavy decoration-2 underline-offset-4 transition-colors hover:text-primary'
+                  }
+                  onClick={() => setEditModalOpen(true)}
+                >
+                  创建一个
+                </span>
+                吧！
+              </>
+            )}
           </div>
         )}
       </div>
