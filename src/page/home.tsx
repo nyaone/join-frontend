@@ -1,7 +1,5 @@
 import Header from '@/component/header';
 import Hero from '@/component/home/hero';
-import Feature1 from '@/component/home/feature-1';
-import Feature2 from '@/component/home/feature-2';
 import Footer from '@/component/footer';
 import ResultModal from '@/component/modal/resultModal';
 import { useCallback, useEffect, useState } from 'react';
@@ -17,7 +15,7 @@ const Home = () => {
   const [isShowingResult, setShowingResult] = useState(false);
   const [result, setResult] = useState<string>('');
 
-  const performLogin = async () => {
+  const doLogin = async () => {
     setLoading(true);
     try {
       const authLink = await API.LoginAPI.Request();
@@ -45,10 +43,8 @@ const Home = () => {
 
   return (
     <main>
-      <Header loginButton={true} performLogin={performLogin} />
-      <Hero />
-      <Feature1 />
-      <Feature2 />
+      <Header />
+      <Hero doLogin={doLogin} />
       <Footer />
 
       <LoadingModal isOpen={isLoading} />

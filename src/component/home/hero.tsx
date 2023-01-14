@@ -1,6 +1,10 @@
 import IntroBanner from '@/asset/intro-banner.png';
 
-const Hero = () => (
+interface HeroProps {
+  doLogin: () => void;
+}
+
+const Hero = ({ doLogin }: HeroProps) => (
   <div className="relative">
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
@@ -16,6 +20,24 @@ const Hero = () => (
           <p className="mx-auto mt-6 max-w-lg text-center text-xl text-white sm:max-w-3xl">
             欢迎更多好伙伴们加入我们！
           </p>
+          <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
+            <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
+              <a
+                href="https://docs.nya.one/peripheral/join/"
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-xl font-semibold text-primary shadow-sm transition-colors hover:bg-gray-300 sm:px-8"
+              >
+                文档
+              </a>
+              <button
+                onClick={doLogin}
+                className="flex items-center justify-center rounded-md border border-transparent bg-primary bg-opacity-80 px-4 py-3 text-xl font-semibold text-white shadow-sm transition-colors hover:bg-deeper sm:px-8"
+              >
+                登录
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
