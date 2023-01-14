@@ -5,7 +5,6 @@ import ResultModal from '@/component/modal/resultModal';
 import LoadingModal from '@/component/modal/loadingModal';
 import { AdminInstanceKey } from '@/common/settings';
 import InviteesTable from '@/component/admin/invitees/inviteesTable';
-import Loading from '@/common/icons/loading';
 
 const AdminInviteesHeader = () => (
   <div className="flex items-center">

@@ -9,7 +9,6 @@ import CodesHeader from '@/component/admin/codes/codesHeader';
 import type { Result } from '@/component/admin/codes/Result';
 import CodesTable from '@/component/admin/codes/codesTable';
 import { DefaultCode } from '@/component/admin/codes/DefaultCode';
-import Loading from '@/common/icons/loading';
 
 const AdminCodes = () => {
   const [isLoading, setLoading] = useState(true);
