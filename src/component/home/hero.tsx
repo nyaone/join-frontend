@@ -2,9 +2,10 @@ import IntroBanner from '@/asset/intro-banner.png';
 
 interface HeroProps {
   doLogin: () => void;
+  isSessionExist: boolean;
 }
 
-const Hero = ({ doLogin }: HeroProps) => (
+const Hero = ({ doLogin, isSessionExist }: HeroProps) => (
   <div className="relative">
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
@@ -34,7 +35,7 @@ const Hero = ({ doLogin }: HeroProps) => (
                 onClick={doLogin}
                 className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-primary bg-opacity-80 px-4 py-3 text-xl font-semibold text-white shadow-sm transition-colors hover:bg-deeper sm:px-8"
               >
-                登录
+                {isSessionExist ? '控制台' : '登录'}
               </span>
             </div>
           </div>
