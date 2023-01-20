@@ -72,10 +72,10 @@ const AdminInvitees = () => {
     <>
       <div className="px-4 sm:px-6 lg:px-8">
         <AdminInviteesHeader isLoading={isLoading} />
-        {invitees.length > 0 ? (
-          <InviteesTable instanceUri={instanceUri} invitees={invitees} />
+        {invitees.length > 0 || isLoading ? (
+          <InviteesTable instanceUri={instanceUri} invitees={invitees} isLoading={isLoading} />
         ) : (
-          <div className={'p-4'}>{isLoading ? <>正在努力加载中...</> : <>还没有找到伙伴哦，快去发出邀请吧！</>}</div>
+          <div className={'p-4'}>还没有找到伙伴哦，快去发出邀请吧！</div>
         )}
       </div>
 

@@ -108,7 +108,7 @@ const AdminCodes = () => {
           setEditModalOpen={setEditModalOpen}
           isLoading={isLoading}
         />
-        {inviteCodes.length > 0 ? (
+        {inviteCodes.length > 0 || isLoading ? (
           <CodesTable
             inviteCodes={inviteCodes}
             setCurrentEditingCode={setCurrentEditingCode}
@@ -116,25 +116,20 @@ const AdminCodes = () => {
             setEditModalOpen={setEditModalOpen}
             setResult={setResult}
             setShowingResult={setShowingResult}
+            isLoading={isLoading}
           />
         ) : (
           <div className={'p-4'}>
-            {isLoading ? (
-              <>正在努力加载中...</>
-            ) : (
-              <>
-                还没有邀请码哦，赶紧
-                <span
-                  className={
-                    'cursor-pointer px-1 underline decoration-primary decoration-wavy decoration-2 underline-offset-4 transition-colors hover:text-primary'
-                  }
-                  onClick={() => setEditModalOpen(true)}
-                >
-                  创建一个
-                </span>
-                吧！
-              </>
-            )}
+            还没有邀请码哦，赶紧
+            <span
+              className={
+                'cursor-pointer px-1 underline decoration-primary decoration-wavy decoration-2 underline-offset-4 transition-colors hover:text-primary'
+              }
+              onClick={() => setEditModalOpen(true)}
+            >
+              创建一个
+            </span>
+            吧！
           </div>
         )}
       </div>

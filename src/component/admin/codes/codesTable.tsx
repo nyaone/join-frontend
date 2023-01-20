@@ -9,6 +9,7 @@ interface CodesTableProps {
   setEditModalOpen: (state: boolean) => void;
   setResult: (state: Result) => void;
   setShowingResult: (state: boolean) => void;
+  isLoading: boolean;
 }
 
 const CodesTableHeader = () => (
@@ -37,57 +38,72 @@ const CodesTable = ({
   setEditModalOpen,
   setResult,
   setShowingResult,
+  isLoading,
 }: CodesTableProps) => (
   <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
     <table className="min-w-full divide-y divide-gray-300">
       <CodesTableHeader />
       <tbody className="divide-y divide-gray-200 bg-white">
-        {inviteCodes.map((code) => (
-          <tr
-            key={code.code}
-            className="cursor-pointer transition-colors hover:bg-gray-100"
-            onClick={() => {
-              setCurrentEditingCode(code);
-              setCreatingNew(false);
-              setEditModalOpen(true);
-            }}
-          >
-            <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
-              {code.code}
-              <dl className="font-normal lg:hidden">
-                <dd className="mt-1 truncate text-gray-700">{code.comment}</dd>
-                <dd className="mt-1 truncate text-gray-500 md:hidden">邀请了 {code.invite_count} 人</dd>
-                <dd className="mt-1 truncate sm:hidden">
-                  {code.is_valid ? (
-                    <span className="text-green-500">有效的</span>
-                  ) : (
-                    <span className="text-red-500">失效原因： {code.invalid_reason}</span>
-                  )}
-                </dd>
-              </dl>
-            </td>
-            <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{code.comment}</td>
-            <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">{code.invite_count}</td>
-            <td
-              className={`hidden px-3 py-4 text-sm text-gray-500 transition-colors sm:table-cell ${
-                code.is_valid ? 'text-green-500 hover:text-green-300' : 'text-red-500 hover:text-red-300'
-              }`}
-              onClick={(ev) => {
-                ev.stopPropagation();
+        {isLoading
+          ? // Skeleton
+            [...new Array(6)].map((_, index) => (
+              <tr key={index} className={'animate-pulse'}>
+                {[...new Array(3)].map((_, index) => (
+                  <td key={index} className={'px-3 py-4'}>
+                    <div className="h-4 rounded bg-slate-200" />
+                  </td>
+                ))}
+                <td className={'px-3 py-4'}>
+                  <div className="h-6 w-6 rounded-full bg-slate-200" />
+                </td>
+              </tr>
+            ))
+          : inviteCodes.map((code) => (
+              <tr
+                key={code.code}
+                className="cursor-pointer transition-colors hover:bg-gray-100"
+                onClick={() => {
+                  setCurrentEditingCode(code);
+                  setCreatingNew(false);
+                  setEditModalOpen(true);
+                }}
+              >
+                <td className="w-full max-w-0 py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:w-auto sm:max-w-none sm:pl-6">
+                  {code.code}
+                  <dl className="font-normal lg:hidden">
+                    <dd className="mt-1 truncate text-gray-700">{code.comment}</dd>
+                    <dd className="mt-1 truncate text-gray-500 md:hidden">邀请了 {code.invite_count} 人</dd>
+                    <dd className="mt-1 truncate sm:hidden">
+                      {code.is_valid ? (
+                        <span className="text-green-500">有效的</span>
+                      ) : (
+                        <span className="text-red-500">失效原因： {code.invalid_reason}</span>
+                      )}
+                    </dd>
+                  </dl>
+                </td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 lg:table-cell">{code.comment}</td>
+                <td className="hidden px-3 py-4 text-sm text-gray-500 md:table-cell">{code.invite_count}</td>
+                <td
+                  className={`hidden px-3 py-4 text-sm text-gray-500 transition-colors sm:table-cell ${
+                    code.is_valid ? 'text-green-500 hover:text-green-300' : 'text-red-500 hover:text-red-300'
+                  }`}
+                  onClick={(ev) => {
+                    ev.stopPropagation();
 
-                setResult({
-                  success: code.is_valid,
-                  title: code.is_valid ? '邀请码是有效的' : '邀请码已失效',
-                  message: code.is_valid ? '邀请码没问题，快去分享吧' : code.invalid_reason,
-                });
+                    setResult({
+                      success: code.is_valid,
+                      title: code.is_valid ? '邀请码是有效的' : '邀请码已失效',
+                      message: code.is_valid ? '邀请码没问题，快去分享吧' : code.invalid_reason,
+                    });
 
-                setShowingResult(true);
-              }}
-            >
-              {code.is_valid ? <CheckCircleIcon className={'h-6 w-6'} /> : <XCircleIcon className={'h-6 w-6'} />}
-            </td>
-          </tr>
-        ))}
+                    setShowingResult(true);
+                  }}
+                >
+                  {code.is_valid ? <CheckCircleIcon className={'h-6 w-6'} /> : <XCircleIcon className={'h-6 w-6'} />}
+                </td>
+              </tr>
+            ))}
       </tbody>
     </table>
   </div>
