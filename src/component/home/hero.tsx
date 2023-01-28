@@ -1,4 +1,5 @@
-import IntroBanner from '@/asset/intro-banner.png';
+import BannerJpg from '@/asset/banner.jpg';
+import BannerWebp from '@/asset/banner.webp';
 
 interface HeroProps {
   doLogin: () => void;
@@ -10,7 +11,10 @@ const Hero = ({ doLogin, isSessionExist }: HeroProps) => (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="relative shadow-xl sm:overflow-hidden sm:rounded-2xl">
         <div className="absolute inset-0">
-          <img className="h-full w-full object-cover" src={IntroBanner} alt="People working on laptops" />
+          <picture>
+            <source srcSet={BannerWebp} type="image/webp" />
+            <img className="h-full w-full object-cover" src={BannerJpg} alt="NyaOne Cats" />
+          </picture>
           <div className="absolute inset-0 bg-gray-500 mix-blend-multiply" />
         </div>
         <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
